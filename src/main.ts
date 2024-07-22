@@ -1,4 +1,5 @@
 import { CheckboxCanvas } from './checkbox-canvas';
+import { GraphicsRenderer } from './logic';
 import './style.css'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -10,3 +11,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 
 const checkboxCanvas = new CheckboxCanvas(document.querySelector<HTMLDivElement>('#checkbox-canvas')!, 40, 40);
+const graphicsRenderer = new GraphicsRenderer(checkboxCanvas);
+
+graphicsRenderer.startAnimation();

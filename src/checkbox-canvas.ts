@@ -1,11 +1,11 @@
 export class CheckboxCanvas {
 	private checkboxes: HTMLInputElement[];
-  private width: number;
-  private height: number;
+	private width: number;
+	private height: number;
 
 	constructor(element: HTMLElement, width: number, height: number) {
-    this.width = width;
-    this.height = height;
+		this.width = width;
+		this.height = height;
 
 		const container = document.createElement('div');
 		container.style.display = 'flex';
@@ -24,42 +24,57 @@ export class CheckboxCanvas {
 		element.append(container);
 	}
 
-  getWidth() {
-    return this.width;
-  }
-  
-  getHeight() {
-    return this.height;
-  }
-  private calculateCheckboxIndex(x: number, y: number) {
+	getWidth() {
+		return this.width;
+	}
+
+	getHeight() {
+		return this.height;
+	}
+	private calculateCheckboxIndex(x: number, y: number) {
 		return y * this.width + x;
 	}
 	selectCheckbox(x: number, y: number) {
-    const index = this.calculateCheckboxIndex(x, y);
+		const index = this.calculateCheckboxIndex(x, y);
 		this.checkboxes[index].checked = true;
 	}
 
-  deselectCheckbox(index: number) {
-    this.checkboxes[index].checked = false;
-  }
+	deselectCheckbox(x: number, y: number) {
+    const index = this.calculateCheckboxIndex(x, y);
+		this.checkboxes[index].checked = false;
+	}
 
+	clearCanvas() {
+		this.checkboxes.forEach(checkbox => (checkbox.checked = false));
+	}
+
+	/**
+	 * Draws a line between two points (x0, y0) and (x1, y1) on a CheckboxCanvas.
+	 * Bresenham's line algorithm: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm.
+	 */
 	drawLine(x0: number, y0: number, x1: number, y1: number) {
 		const dx = Math.abs(x1 - x0);
-		const dy = Math.abs(y1 - y0);
 		const sx = x0 < x1 ? 1 : -1;
+
+		const dy = -Math.abs(y1 - y0);
 		const sy = y0 < y1 ? 1 : -1;
-		let err = dx - dy;
+
+		let error = dx + dy;
+
 		while (true) {
-      this.selectCheckbox(x0, y0);
+			this.selectCheckbox(x0, y0);
 			if (x0 === x1 && y0 === y1) break;
-			const e2 = 2 * err;
-			if (e2 > -dy) {
-				err -= dy;
-				x0 += sx;
+			const e2 = 2 * error;
+			if (e2 >= dy) {
+				if (x0 == x1) break;
+				error = error + dy;
+				x0 = x0 + sx;
 			}
-			if (e2 < dx) {
-				err += dx;
-				y0 += sy;
+
+			if (e2 <= dx) {
+				if (y0 == y1) break;
+				error = error + dx;
+				y0 = y0 + sy;
 			}
 		}
 	}
