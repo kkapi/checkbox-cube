@@ -1,17 +1,16 @@
 export class CheckboxCanvas {
-	private checkboxes: HTMLInputElement[];
-	private width: number;
-	private height: number;
+	private checkboxes: HTMLInputElement[] = [];
+	private width = 0;
+	private height = 0;
 
-	constructor(element: HTMLElement, width: number, height: number) {
-		this.width = width;
+  init(element: HTMLElement, width: number, height: number): void {
+    this.width = width;
 		this.height = height;
 
 		const container = document.createElement('div');
 		container.style.display = 'flex';
 		container.style.flexWrap = 'wrap';
 		container.style.width = `${width * 20}px`;
-		container.style.display = 'flex';
 
 		const checkboxesNumber = width * height;
 		this.checkboxes = new Array(checkboxesNumber).fill(null).map(() => {
@@ -22,29 +21,29 @@ export class CheckboxCanvas {
 
 		container.append(...this.checkboxes);
 		element.append(container);
-	}
+  }
 
-	getWidth() {
+	getWidth(): number {
 		return this.width;
 	}
 
-	getHeight() {
+	getHeight(): number {
 		return this.height;
 	}
-	private calculateCheckboxIndex(x: number, y: number) {
+	private calculateCheckboxIndex(x: number, y: number): number {
 		return y * this.width + x;
 	}
-	selectCheckbox(x: number, y: number) {
+	selectCheckbox(x: number, y: number): void {
 		const index = this.calculateCheckboxIndex(x, y);
 		this.checkboxes[index].checked = true;
 	}
 
-	deselectCheckbox(x: number, y: number) {
+	deselectCheckbox(x: number, y: number): void {
     const index = this.calculateCheckboxIndex(x, y);
 		this.checkboxes[index].checked = false;
 	}
 
-	clearCanvas() {
+	clearCanvas(): void {
 		this.checkboxes.forEach(checkbox => (checkbox.checked = false));
 	}
 
@@ -52,7 +51,7 @@ export class CheckboxCanvas {
 	 * Draws a line between two points (x0, y0) and (x1, y1) on a CheckboxCanvas.
 	 * Bresenham's line algorithm: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm.
 	 */
-	drawLine(x0: number, y0: number, x1: number, y1: number) {
+	drawLine(x0: number, y0: number, x1: number, y1: number): void {
 		const dx = Math.abs(x1 - x0);
 		const sx = x0 < x1 ? 1 : -1;
 

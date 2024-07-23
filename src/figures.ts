@@ -1,4 +1,4 @@
-import { Figure } from "./types";
+import { Figure } from "./types/types";
 
 export const Cube: Figure = {
 	vertexTable: [

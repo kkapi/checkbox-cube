@@ -1,6 +1,6 @@
 import { CheckboxCanvas } from './checkbox-canvas';
 import { Cube } from './figures';
-import { CameraPoint, Figure } from './types';
+import { CameraPoint, Figure } from './types/types';
 
 export class GraphicsRenderer {
 	private figure: Figure;
@@ -24,21 +24,21 @@ export class GraphicsRenderer {
 	private getScaledVertices(
 		vertexTable: number[][],
 		coefficient = this.canvas.getWidth() / 4
-	) {
+	): number[][] {
 		return vertexTable.map(vertex => vertex.map(value => value * coefficient));
 	}
 
 	private getShiftedVertices(
 		vertexTable: number[][],
 		coefficient = this.canvas.getWidth() / 2
-	) {
+	): number[][] {
 		return vertexTable.map(vertex => vertex.map(value => value + coefficient));
 	}
 
 	private getRotatedAroundXVertices(
 		vertexTable: number[][],
 		angleDegrees: number
-	) {
+	): number[][] {
 		const radians = (angleDegrees * Math.PI) / 180;
 
 		return vertexTable.map(vertex => {
@@ -54,7 +54,7 @@ export class GraphicsRenderer {
 	private getRotatedAroundYVertices(
 		vertexTable: number[][],
 		angleDegrees: number
-	) {
+	): number[][] {
 		const radians = (angleDegrees * Math.PI) / 180;
 
 		return vertexTable.map(vertex => {
@@ -67,7 +67,7 @@ export class GraphicsRenderer {
 		});
 	}
 
-	private getRotatedAroundZVertices(
+	/* private getRotatedAroundZVertices(
 		vertexTable: number[][],
 		angleDegrees: number
 	) {
@@ -81,9 +81,9 @@ export class GraphicsRenderer {
 
 			return [rotatedX, rotatedY, z];
 		});
-	}
+	} */
 
-	private getVertexProjection(vertexTable: number[][]) {
+	private getVertexProjection(vertexTable: number[][]): number[][] {
 		return vertexTable.map(vertex => {
 			const x =
 				this.cameraPoint.x -
@@ -100,7 +100,7 @@ export class GraphicsRenderer {
 		});
 	}
 
-	private getTransformedFigure() {
+	private getTransformedFigure(): Figure {
 		const { vertexTable } = this.figure;
 
 		const rotatedAroundXVertices = this.getRotatedAroundXVertices(
@@ -111,10 +111,10 @@ export class GraphicsRenderer {
 			rotatedAroundXVertices,
 			this.currentAngle
 		);
-		// const rotatedAroundZVertices = this.getRotatedAroundZVertices(
-		// 	rotatedAroundYVertices,
-		// 	this.currentAngle,
-		// );
+		/* const rotatedAroundZVertices = this.getRotatedAroundZVertices(
+			rotatedAroundYVertices,
+			this.currentAngle,
+		); */
 		const scaledVertices = this.getScaledVertices(rotatedAroundYVertices);
 		const shiftedVertices = this.getShiftedVertices(scaledVertices);
 		const projectedVertices = this.getVertexProjection(shiftedVertices);
@@ -122,11 +122,11 @@ export class GraphicsRenderer {
 		return { ...this.figure, vertexTable: projectedVertices };
 	}
 
-	private setCurrentAngle(angle: number) {
+	private setCurrentAngle(angle: number): void {
 		this.currentAngle = angle % 360;
 	}
 
-	drawFigure() {
+	drawFigure(): void {
 		const { vertexTable, edgeTable } = this.getTransformedFigure();
 
 		edgeTable.forEach(edge => {
@@ -137,7 +137,7 @@ export class GraphicsRenderer {
 		});
 	}
 
-	startAnimation() {
+	startAnimation(): number {
 		this.drawFigure();
 
 		const timer = setInterval(() => {
