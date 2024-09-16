@@ -48,8 +48,8 @@ export class CheckboxCanvas {
 	}
 
 	/**
-	 * Draws a line between two points (x0, y0) and (x1, y1) on a CheckboxCanvas.
-	 * Bresenham's line algorithm: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm.
+	 * Рисует линию между точками (x0, y0) и (x1, y1) на холсте (CheckboxCanvas).
+	 * Алгоритм Брезенхэма: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm.
 	 */
 	drawLine(x0: number, y0: number, x1: number, y1: number): void {
 		const dx = Math.abs(x1 - x0);

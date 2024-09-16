@@ -67,22 +67,6 @@ export class GraphicsRenderer {
 		});
 	}
 
-	/* private getRotatedAroundZVertices(
-		vertexTable: number[][],
-		angleDegrees: number
-	) {
-		const radians = (angleDegrees * Math.PI) / 180;
-
-		return vertexTable.map(vertex => {
-			const [x, y, z] = vertex;
-
-			const rotatedX = x * Math.cos(radians) - y * Math.sin(radians);
-			const rotatedY = x * Math.sin(radians) + y * Math.cos(radians);
-
-			return [rotatedX, rotatedY, z];
-		});
-	} */
-
 	private getVertexProjection(vertexTable: number[][]): number[][] {
 		return vertexTable.map(vertex => {
 			const x =
@@ -111,10 +95,7 @@ export class GraphicsRenderer {
 			rotatedAroundXVertices,
 			this.currentAngle
 		);
-		/* const rotatedAroundZVertices = this.getRotatedAroundZVertices(
-			rotatedAroundYVertices,
-			this.currentAngle,
-		); */
+		
 		const scaledVertices = this.getScaledVertices(rotatedAroundYVertices);
 		const shiftedVertices = this.getShiftedVertices(scaledVertices);
 		const projectedVertices = this.getVertexProjection(shiftedVertices);
